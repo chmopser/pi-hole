@@ -1867,7 +1867,7 @@ FTLinstall() {
     if [[ "${ftlBranch}" == "master" ]]; then
         url="https://github.com/pi-hole/FTL/releases/download/v6.4.1/pihole-FTL-armv7"
     else
-        url="https://ftl.pi-hole.net/${ftlBranch}"
+        url="https://ftl.pi-hole.net/v6.4.1/pihole-FTL-armv7"
     fi
 
     if curl -sSL --fail "${url}/${binary}" -o "${binary}"; then
