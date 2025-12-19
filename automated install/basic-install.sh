@@ -1865,30 +1865,37 @@ FTLinstall() {
 
     # Determine which version of FTL to download
     if [[ "${ftlBranch}" == "master" ]]; then
-        url="https://github.com/pi-hole/FTL/releases/download/v6.4.1/pihole-FTL-armv7"
+        url="https://github.com/pi-hole/FTL/releases/download/v6.4.1/"
+        printf "ihole-FTL-armv7... "
     else
-        url="https://ftl.pi-hole.net/v6.4.1/pihole-FTL-armv7"
+        url="https://ftl.pi-hole.net/v6.4.1/"
+        printf "armv7... "
     fi
-
+    printf "sha1 of the binary... "
     if curl -sSL --fail "${url}/${binary}" -o "${binary}"; then
         # If the download worked, get sha1 of the binary we just downloaded for verification.
+        printf "download worked... "
         curl -sSL --fail "${url}/${binary}.sha1" -o "${binary}.sha1"
 
         # If we downloaded binary file (as opposed to text),
         if sha1sum --status --quiet -c "${binary}".sha1; then
             printf "transferred... "
 
+            printf "Before... "
             # Before stopping FTL, we download the macvendor database
-            curl -sSL "https://ftl.pi-hole.net/macvendor.db" -o "${PI_HOLE_CONFIG_DIR}/macvendor.db" || true
+
+            printf "true... "
 
 
             # If the binary already exists in /usr/bin, then we need to stop the service
             # If the binary does not exist (fresh installs), then we can skip this step.
             if [[ -f /usr/bin/pihole-FTL ]]; then
+                printf "stop_service... "
                 stop_service pihole-FTL >/dev/null
             fi
 
             # Install the new version with the correct permissions
+            printf "install... "
             install -T -m 0755 "${binary}" /usr/bin/pihole-FTL
 
             # Move back into the original directory the user was in
